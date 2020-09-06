@@ -1,6 +1,6 @@
 # openfootball
 
-Flutter client api for [Open Football Data](https://github.com/openfootball/football.json).
+A Flutter api client for [Open Football Data](https://github.com/openfootball/football.json).
 
 This package contains a high-level client to fetch data from HTTP resources.
 

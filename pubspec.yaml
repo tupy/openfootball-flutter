@@ -1,5 +1,5 @@
 name: openfootball
-description: Flutter client api for Open Football Data.
+description: A Flutter api client for Open Football Data. A high-level client to fetch data from HTTP resources.
 version: 0.1.0
 repository: https://github.com/tupy/openfootball-flutter
 
