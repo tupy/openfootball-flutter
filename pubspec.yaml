@@ -1,6 +1,6 @@
 name: openfootball
 description: Flutter client api for Open Football Data.
-version: 0.0.1
+version: 0.1.0
 repository: https://github.com/tupy/openfootball-flutter
 
 environment:
