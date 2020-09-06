@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:openfootball/api.dart';
+import 'package:openfootball/src/api.dart';
 
 import 'models/club.dart';
 import 'models/group.dart';

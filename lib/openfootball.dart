@@ -1,3 +1,3 @@
 library openfootball;
 
-export 'json_client.dart';
+export 'src/json_client.dart';

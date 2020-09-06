@@ -4,14 +4,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:openfootball/json_client.dart';
-import 'package:openfootball/models/club.dart';
-import 'package:openfootball/models/competition.dart';
-import 'package:openfootball/models/group.dart';
-import 'package:openfootball/models/round.dart';
-import 'package:openfootball/models/match.dart';
+import 'package:openfootball/src/json_client.dart';
+import 'package:openfootball/src/models/club.dart';
+import 'package:openfootball/src/models/competition.dart';
+import 'package:openfootball/src/models/group.dart';
+import 'package:openfootball/src/models/round.dart';
+import 'package:openfootball/src/models/match.dart';
 
-import 'fixture.dart';
+import './fixture.dart';
 
 class MockClient extends Mock implements http.Client {}
 
