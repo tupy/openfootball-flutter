@@ -1,0 +1,11 @@
+name: example
+
+dependencies:
+    flutter:
+      sdk: flutter
+
+dev_dependencies:
+    openfootball:
+      path: ../
+
+flutter:
