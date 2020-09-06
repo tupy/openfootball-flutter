@@ -25,7 +25,7 @@ class Competition {
     return 'Competition(name: $name, clubs: ${clubs.map((e) => e.name)}, groups: ${groups.length}, rounds: ${rounds.length}})';
   }
 
-  List<Match> matches() {
+  List<Match> get matches {
     return rounds
         .map((round) => round.matches)
         .expand((i) => i) // flatten

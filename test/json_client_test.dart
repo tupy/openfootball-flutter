@@ -156,7 +156,7 @@ void main() {
       expect(competition.groups.length, 8);
       expect(competition.rounds.length, 7);
       expect(competition.clubs.length, 32);
-      expect(competition.matches().length, 112);
+      expect(competition.matches.length, 112);
     });
 
     test('throws an exception on fetch with error', () {
