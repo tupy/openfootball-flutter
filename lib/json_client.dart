@@ -14,11 +14,14 @@ class JsonClient implements OpenFootballAPI {
   final String baseUrl;
   final String league;
   final String season;
-  final http.Client client;
+  http.Client client;
 
   JsonClient({this.league, this.season, this.client, this.baseUrl = gitHubUrl})
       : assert(league != null),
-        assert(season != null);
+        assert(season != null) {
+    this.client = client ?? http.Client();
+    ;
+  }
 
   @override
   Future<List<Club>> clubs() async {
@@ -29,7 +32,7 @@ class JsonClient implements OpenFootballAPI {
       List<dynamic> jClubs = data['clubs'];
       return jClubs.map((jClub) => Club.fromMap(jClub)).toList();
     } else {
-      throw Exception('Failed to load clubs');
+      throw Exception('Failed to load clubs: ${response.body}');
     }
   }
 
@@ -42,7 +45,7 @@ class JsonClient implements OpenFootballAPI {
       List<dynamic> jGroups = data['groups'];
       return jGroups.map((jGroup) => Group.fromMap(jGroup)).toList();
     } else {
-      throw Exception('Failed to load groups');
+      throw Exception('Failed to load groups: ${response.body}');
     }
   }
 
@@ -59,7 +62,7 @@ class JsonClient implements OpenFootballAPI {
         rounds: _parseRounds(data['rounds']),
       );
     } else {
-      throw Exception('Failed to load rounds');
+      throw Exception('Failed to load rounds: ${response.body}');
     }
   }
 
