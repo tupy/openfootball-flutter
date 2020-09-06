@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
-import 'package:openfootball/src/api.dart';
 
+import 'api.dart';
 import 'models/club.dart';
 import 'models/group.dart';
 import 'models/match.dart';
@@ -16,11 +17,14 @@ class JsonClient implements OpenFootballAPI {
   final String season;
   http.Client client;
 
-  JsonClient({this.league, this.season, this.client, this.baseUrl = gitHubUrl})
-      : assert(league != null),
+  JsonClient({
+    @required this.league,
+    @required this.season,
+    this.client,
+    this.baseUrl = gitHubUrl,
+  })  : assert(league != null),
         assert(season != null) {
-    this.client = client ?? http.Client();
-    ;
+    client = client ?? http.Client();
   }
 
   @override

@@ -13,12 +13,11 @@ class Competition {
   final List<Round> rounds;
 
   Competition({
-    this.name,
-    this.clubs,
+    @required this.name,
+    this.clubs = const [],
     this.groups = const [],
     this.rounds = const [],
-  })  : assert(name != null && name.isNotEmpty),
-        assert(clubs != null && clubs.isNotEmpty);
+  }) : assert(name != null && name.isNotEmpty);
 
   @override
   String toString() {

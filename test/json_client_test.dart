@@ -6,9 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:openfootball/src/json_client.dart';
 import 'package:openfootball/src/models/club.dart';
-import 'package:openfootball/src/models/competition.dart';
 import 'package:openfootball/src/models/group.dart';
-import 'package:openfootball/src/models/round.dart';
 import 'package:openfootball/src/models/match.dart';
 
 import './fixture.dart';
@@ -16,9 +14,9 @@ import './fixture.dart';
 class MockClient extends Mock implements http.Client {}
 
 void main() {
-  final String baseUrl = 'https://test.local/';
-  final String league = 'cl';
-  final String season = '2019-2020';
+  final baseUrl = 'https://test.local/';
+  final league = 'cl';
+  final season = '2019-2020';
 
   // https://stackoverflow.com/questions/61345133/flutter-unittestinvalid-argument-string-contains-invalid-characters
   final headers = {
@@ -63,8 +61,8 @@ void main() {
 
   group('clubs', () {
     test('fetch clubs with success', () async {
-      final jsonClient = buildClient(withClubsMock());
-      List<Club> clubs = await jsonClient.clubs();
+      var jsonClient = buildClient(withClubsMock());
+      var clubs = await jsonClient.clubs();
       expect(clubs.length, 32);
       expect(
           clubs.first,
@@ -76,54 +74,54 @@ void main() {
     });
 
     test('throws an exception on fetch clubs with error', () {
-      final jsonClient = buildClient(withClubsMock(statusCode: 404));
+      var jsonClient = buildClient(withClubsMock(statusCode: 404));
       expect(jsonClient.clubs(), throwsException);
     });
   });
 
   group('groups', () {
     test('fetch with success', () async {
-      final jsonClient = buildClient(withGroupsMock());
-      List<Group> groups = await jsonClient.groups();
+      var jsonClient = buildClient(withGroupsMock());
+      var groups = await jsonClient.groups();
       expect(groups.length, 8);
       expect(
           groups.first,
           Group(
             name: 'Group A',
             teams: [
-              "Real Madrid",
-              "Paris Saint-Germain",
-              "Galatasaray İstanbul AŞ",
-              "Club Brugge"
+              'Real Madrid',
+              'Paris Saint-Germain',
+              'Galatasaray İstanbul AŞ',
+              'Club Brugge'
             ],
           ));
     });
 
     test('throws an exception on fetch with error', () {
-      final jsonClient = buildClient(withGroupsMock(statusCode: 404));
+      var jsonClient = buildClient(withGroupsMock(statusCode: 404));
       expect(jsonClient.groups(), throwsException);
     });
   });
 
   group('rounds', () {
     test('fetch with success', () async {
-      final jsonClient = buildClient(withRoundsMock());
-      List<Round> rounds = await jsonClient.rounds();
+      var jsonClient = buildClient(withRoundsMock());
+      var rounds = await jsonClient.rounds();
       expect(rounds.length, 7);
       expect(rounds.first.name, 'Matchday 1');
       expect(rounds.first.matches.length, 16);
     });
 
     test('throws an exception on fetch with error', () {
-      final jsonClient = buildClient(withRoundsMock(statusCode: 404));
+      var jsonClient = buildClient(withRoundsMock(statusCode: 404));
       expect(jsonClient.rounds(), throwsException);
     });
   });
 
   group('matches', () {
     test('fetch with success', () async {
-      final jsonClient = buildClient(withRoundsMock());
-      List<Match> matches = await jsonClient.matches();
+      var jsonClient = buildClient(withRoundsMock());
+      var matches = await jsonClient.matches();
       expect(matches.length, 112);
       expect(
           matches.first,
@@ -138,20 +136,20 @@ void main() {
     });
 
     test('throws an exception on fetch with error', () {
-      final jsonClient = buildClient(withRoundsMock(statusCode: 404));
+      var jsonClient = buildClient(withRoundsMock(statusCode: 404));
       expect(jsonClient.matches(), throwsException);
     });
   });
 
   group('competition', () {
     test('fetch with success', () async {
-      final mockClient = MockClient();
+      var mockClient = MockClient();
       withRoundsMock(mockClient: mockClient);
       withGroupsMock(mockClient: mockClient);
       withClubsMock(mockClient: mockClient);
-      final jsonClient = buildClient(mockClient);
+      var jsonClient = buildClient(mockClient);
 
-      Competition competition = await jsonClient.competition();
+      var competition = await jsonClient.competition();
       expect(competition.name, 'Champions League 2019/20');
       expect(competition.groups.length, 8);
       expect(competition.rounds.length, 7);
@@ -160,7 +158,7 @@ void main() {
     });
 
     test('throws an exception on fetch with error', () {
-      final jsonClient = buildClient(withRoundsMock(statusCode: 404));
+      var jsonClient = buildClient(withRoundsMock(statusCode: 404));
       expect(jsonClient.competition(), throwsException);
     });
   });
