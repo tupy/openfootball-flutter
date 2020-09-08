@@ -10,7 +10,7 @@ import 'models/competition.dart';
 import 'models/round.dart';
 
 class JsonClient implements OpenFootballAPI {
-  static const String gitHubUrl =
+  static const String GITHUB_URL =
       'https://raw.githubusercontent.com/openfootball/football.json/master';
   final String baseUrl;
   final String league;
@@ -21,9 +21,10 @@ class JsonClient implements OpenFootballAPI {
     @required this.league,
     @required this.season,
     this.client,
-    this.baseUrl = gitHubUrl,
+    this.baseUrl = GITHUB_URL,
   })  : assert(league != null),
-        assert(season != null) {
+        assert(season != null),
+        assert(baseUrl != null) {
     client = client ?? http.Client();
   }
 

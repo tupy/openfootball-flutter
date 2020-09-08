@@ -59,6 +59,21 @@ void main() {
     return mockClient;
   }
 
+  test('assert invalid parameters', () {
+    expect(
+      () => JsonClient(league: league, season: null),
+      throwsAssertionError,
+    );
+    expect(
+      () => JsonClient(league: null, season: season),
+      throwsAssertionError,
+    );
+    expect(
+      () => JsonClient(league: league, season: season, baseUrl: null),
+      throwsAssertionError,
+    );
+  });
+
   group('clubs', () {
     test('fetch clubs with success', () async {
       var jsonClient = buildClient(withClubsMock());
