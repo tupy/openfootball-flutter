@@ -31,7 +31,7 @@ class Round {
 
   Round({
     this.name,
-    this.matches,
+    this.matches = const [],
   });
 
   @override

@@ -52,7 +52,18 @@ void main() {
     mockClient = mockClient ?? MockClient();
     when(mockClient.get('$baseUrl/$season/$league.json'))
         .thenAnswer((_) async => http.Response(
-              statusCode == 200 ? fixture('cl.json') : '{}',
+              statusCode == 200 ? fixture('cl.rounds.json') : '{}',
+              statusCode,
+              headers: headers,
+            ));
+    return mockClient;
+  }
+
+  MockClient withMatchesMock({MockClient mockClient, statusCode = 200}) {
+    mockClient = mockClient ?? MockClient();
+    when(mockClient.get('$baseUrl/$season/$league.json'))
+        .thenAnswer((_) async => http.Response(
+              statusCode == 200 ? fixture('cl.matches.json') : '{}',
               statusCode,
               headers: headers,
             ));
@@ -127,6 +138,14 @@ void main() {
       expect(rounds.first.matches.length, 16);
     });
 
+    test('from matches with success', () async {
+      var jsonClient = buildClient(withMatchesMock());
+      var rounds = await jsonClient.rounds();
+      expect(rounds.length, 7);
+      expect(rounds.first.name, 'Round of 16');
+      expect(rounds.first.matches.length, 15);
+    });
+
     test('throws an exception on fetch with error', () {
       var jsonClient = buildClient(withRoundsMock(statusCode: 404));
       expect(jsonClient.rounds(), throwsException);
@@ -135,6 +154,24 @@ void main() {
 
   group('matches', () {
     test('fetch with success', () async {
+      var jsonClient = buildClient(withMatchesMock());
+      var matches = await jsonClient.matches();
+      expect(matches.length, 112);
+      expect(
+          matches.first,
+          Match(
+            date: DateTime.tryParse('2020-02-18'),
+            round: 'Round of 16',
+            team1: 'Borussia Dortmund',
+            team2: 'Paris Saint-Germain',
+            score1: 2,
+            score2: 1,
+            group: null,
+          ));
+      expect(matches.first.round, 'Round of 16');
+    });
+
+    test('from rounds with success', () async {
       var jsonClient = buildClient(withRoundsMock());
       var matches = await jsonClient.matches();
       expect(matches.length, 112);
@@ -142,12 +179,14 @@ void main() {
           matches.first,
           Match(
             date: DateTime.tryParse('2019-09-18'),
+            round: null,
             team1: 'Club Brugge',
             team2: 'Galatasaray İstanbul AŞ',
             score1: 0,
             score2: 0,
             group: 'Group A',
           ));
+      expect(matches.first.round, null);
     });
 
     test('throws an exception on fetch with error', () {

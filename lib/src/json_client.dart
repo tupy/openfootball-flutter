@@ -60,11 +60,16 @@ class JsonClient implements OpenFootballAPI {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
+      final rounds = data.containsKey('rounds')
+          ? _parseRounds(data['rounds'])
+          : data.containsKey('matches')
+              ? _roundsFromMatches(data['matches'])
+              : <Round>[];
       return Competition(
         name: data['name'],
         clubs: await clubs(),
         groups: await groups(),
-        rounds: _parseRounds(data['rounds']),
+        rounds: rounds,
       );
     } else {
       throw Exception('Failed to load rounds: ${response.body}');
@@ -77,7 +82,10 @@ class JsonClient implements OpenFootballAPI {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      return _parseRounds(data['rounds']);
+      if (data.containsKey('rounds')) {
+        return _parseRounds(data['rounds']);
+      } else if (data.containsKey('matches')) {}
+      return _roundsFromMatches(data['matches']);
     } else {
       throw Exception('Failed to load rounds');
     }
@@ -87,11 +95,42 @@ class JsonClient implements OpenFootballAPI {
     return jRounds.map((jRound) => Round.fromMap(jRound)).toList();
   }
 
+  List<Round> _roundsFromMatches(List<dynamic> jMatches) {
+    final matches = _parseMatches(jMatches);
+    final rounds = <String, Round>{};
+    matches.forEach((match) {
+      if (rounds.containsKey(match.round)) {
+        rounds[match.round].matches.add(match);
+      } else {
+        rounds[match.round] = Round(name: match.round, matches: []);
+      }
+    });
+    return rounds.values.toList();
+  }
+
   @override
   Future<List<Match>> matches() async {
-    return rounds().then((rounds) => rounds
-        .map((round) => round.matches)
-        .expand((i) => i) // flatten
-        .toList());
+    final response = await client.get('$baseUrl/$season/$league.json');
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data.containsKey('matches')
+          ? _parseMatches(data['matches'])
+          : data.containsKey('rounds')
+              ? _matchesFromRounds(data['rounds'])
+              : <Match>[];
+    } else {
+      throw Exception('Failed to load rounds');
+    }
+  }
+
+  List<Match> _parseMatches(List<dynamic> jMatches) =>
+      List<Match>.from(jMatches.map((x) => Match.fromMap(x)));
+
+  List<Match> _matchesFromRounds(List<dynamic> jRounds) {
+    final rounds = _parseRounds(jRounds);
+    final matches = <Match>[];
+    rounds.forEach((round) => matches.addAll(round.matches));
+    return matches;
   }
 }

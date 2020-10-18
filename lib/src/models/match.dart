@@ -18,6 +18,7 @@ Sample:
 @immutable
 class Match {
   final DateTime date;
+  final String round;
   final String team1;
   final String team2;
   final String group;
@@ -26,6 +27,7 @@ class Match {
 
   Match({
     this.date,
+    this.round,
     this.team1,
     this.team2,
     this.group,
@@ -35,12 +37,13 @@ class Match {
 
   @override
   String toString() {
-    return 'Match(date: $date, team1: $team1, team2: $team2, group: $group, score1: $score1, score2: $score2)';
+    return 'Match(date: $date, round: $round, team1: $team1, team2: $team2, group: $group, score1: $score1, score2: $score2)';
   }
 
   Map<String, dynamic> toMap() {
     return {
       'date': date?.millisecondsSinceEpoch,
+      'round': round,
       'team1': team1,
       'team2': team2,
       'group': group,
@@ -55,6 +58,7 @@ class Match {
 
     return Match(
       date: DateTime.tryParse(map['date']),
+      round: map['round'],
       team1: map['team1'],
       team2: map['team2'],
       group: map['group'],
